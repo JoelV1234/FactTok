@@ -1,9 +1,12 @@
 import 'package:biblereels/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
-class AddButton extends StatelessWidget {
+class RectButton extends StatelessWidget {
+  final String text;
   final Function() onTap;
-  const AddButton({super.key, required this.onTap});
+  const RectButton({super.key, 
+    required this.onTap, 
+    required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class AddButton extends StatelessWidget {
           vertical: 7, horizontal: 16
         ),
         child: CustomText(
-          'Save',
+          text,
           fontWeight: FontWeight.bold,
         ),
       ),

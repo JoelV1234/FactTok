@@ -1,3 +1,4 @@
+import 'package:biblereels/widgets/rect_button.dart';
 import 'package:biblereels/widgets/custom_text.dart';
 import 'package:biblereels/facts/fact.dart';
 import 'package:flutter/material.dart';
@@ -10,38 +11,30 @@ class MoreInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        20, 15, 20, 30),
+        25, 30, 25, 20),
       child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start, 
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomText(
-                  fact.title,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-                Expanded(child: Container()),
-                IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+            CustomText(
+              fact.title,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
             SizedBox(height: 10),
             CustomText(
               color: Colors.black,
               fact.description,
               fontSize: 16,
+            ),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: RectButton(
+                text: 'Close',
+                onTap: () => Navigator.of(context).pop(),
+              ),
             ),
           ]
       ),
@@ -58,8 +51,16 @@ void showMoreInfoDialog(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        child: MoreInfoDialog(
-          fact: fact
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(5)
+          )
+        ),
+        child: SizedBox(
+          width: 400,
+          child: MoreInfoDialog(
+            fact: fact
+          ),
         ),
       );
     },

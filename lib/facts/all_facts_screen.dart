@@ -40,16 +40,20 @@ class _AllFactsScreenState extends State<AllFactsScreen> {
           ),
           Align(
             alignment: Alignment.topRight,
-            child: Padding(
+            child: Container(
               padding: const EdgeInsets.fromLTRB(20, 20, 10, 0),
-              child: IconButton(
-                icon: const Icon(
-                  size: 40,
-                  Icons.bookmark_outline,
-                  color: Colors.white,
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: const Color.fromARGB(125, 0, 0, 0),
+                child: IconButton(
+                  icon: const Icon(
+                    size: 40,
+                    Icons.bookmark_outline,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => showCreateCollectionDialog(
+                    context, selectedFact ?? facts.first),
                 ),
-                onPressed: () => showCreateCollectionDialog(
-                  context, selectedFact ?? facts.first),
               ),
             ),
           ),

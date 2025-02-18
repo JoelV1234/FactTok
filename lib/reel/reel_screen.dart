@@ -78,7 +78,7 @@ class _ReelScreenState extends State<ReelScreen> {
                 child: Stack(
                   children: [
                     Image.network(
-                      widget.facts[currentIndex].photourl,
+                      widget.facts[currentIndex].photourl ?? '',
                       height: double.infinity,
                       width: double.infinity,
                       fit: BoxFit.cover,

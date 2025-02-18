@@ -1,17 +1,50 @@
 import 'package:biblereels/facts/fact.dart';
-import 'package:biblereels/mock_facts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
+import 'package:html/parser.dart';
+import 'package:uuid/uuid.dart';
 
 class FactsApi {
-  late final SharedPreferences prefs;
+  List<String> factsUrl = [
+    'https://www.thefactsite.com/top-100-technology-facts/'
+  ];
+  final dio = Dio();
 
-  Future initalize() async {
-    prefs = await SharedPreferences.getInstance();
-    return MockFacts.facts;
+String removeAllHtmlTags(String htmlText) {
+    RegExp exp = RegExp(
+      r"<[^>]*>",
+      multiLine: true,
+      caseSensitive: true
+    );
+    return htmlText.replaceAll(exp, '');
   }
 
   Future<List<Fact>> getAllFacts() async {
-    return MockFacts.facts;
+    List<Fact> facts = [];  
+    for (var url in factsUrl) {
+      final response = await dio.get(url);
+      RegExp regExp = RegExp(r'<h2 class="list">(.*?)<h2 class="list">', dotAll: true);
+      final getFactTags = regExp.allMatches(response.data).toList();
+      for (var tags in getFactTags) {
+        final parsed = parse('<h2 class="list">${tags.group(1).toString()}');
+        String title = parsed.getElementsByTagName("h2")[0].innerHtml;
+        final image = parsed.getElementsByTagName("img")[0].attributes['data-src'];
+        final paragraphs = parsed.getElementsByTagName("p");
+        String description = "";
+        for (var i = 1; i < paragraphs.length; i++) {
+          description += paragraphs[i].innerHtml;
+        }
+        facts.add(Fact(
+          id: Uuid().v4(),
+          title: removeAllHtmlTags(title),
+          description: removeAllHtmlTags(description),
+          photourl: image,
+        ));
+      }
+        
+      
+    }
+    facts.shuffle();
+    return facts;
   }
 
 }

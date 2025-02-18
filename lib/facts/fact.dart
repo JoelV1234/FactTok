@@ -4,12 +4,12 @@ class Fact with EquatableMixin {
   final String id;
   final String title;
   final String description;
-  final String photourl;
+  final String? photourl;
 
   Fact({
     required this.id,
     required this.description,
-    required this.photourl,
+    this.photourl,
     required this.title
   });
 
@@ -22,7 +22,7 @@ class Fact with EquatableMixin {
     );
   }
 
-  Map<String, String> toJson() => {
+  Map<String, dynamic> toJson() => {
     'id': id,
     'title': title,
     'description': description,

@@ -1,5 +1,5 @@
 import 'package:biblereels/collections/models/collection_view_model.dart';
-import 'package:biblereels/collections/widgets/add_button.dart';
+import 'package:biblereels/widgets/rect_button.dart';
 import 'package:biblereels/config.dart';
 import 'package:flutter/material.dart';
 
@@ -50,10 +50,11 @@ class _ChangeNameDialogState extends State<ChangeNameDialog> {
                 labelText: 'Name',
               ),
             ),
-            SizedBox(height: 9,),
+            SizedBox(height: 13,),
             Align(
               alignment: Alignment.bottomRight,
-              child: AddButton(
+              child: RectButton(
+                text: 'Save',
                 onTap: () {
                   collection.changeName(nameController.text);
                   Navigator.of(context).pop();

@@ -1,6 +1,6 @@
 import 'package:biblereels/collections/models/update_collection_model.dart';
 import 'package:biblereels/collections/models/collection.dart';
-import 'package:biblereels/collections/widgets/add_button.dart';
+import 'package:biblereels/widgets/rect_button.dart';
 import 'package:biblereels/collections/widgets/collection_check.dart';
 import 'package:biblereels/facts/fact.dart';
 import 'package:biblereels/facts/facts_repo.dart';
@@ -75,7 +75,8 @@ class _CreateCollecitonDialogState extends State<CreateCollecitonDialog> {
                   ),
                 ),
                 SizedBox(height: 10),
-                AddButton(
+                RectButton(
+                  text: 'Save',
                   onTap: submit
                 )
               ],
