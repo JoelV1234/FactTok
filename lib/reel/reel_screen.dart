@@ -22,27 +22,35 @@ class ReelScreen extends StatefulWidget {
 
 class _ReelScreenState extends State<ReelScreen> {
   int currentIndex = 0;
+  late PageController pageController;
 
   @override
   void initState() {
-    currentIndex = widget.initialIndex ?? 0;
+    pageController = PageController(initialPage: widget.initialIndex ?? 0);
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant ReelScreen oldWidget) {
-    if (widget.initialIndex != oldWidget.initialIndex) {
-      currentIndex = widget.initialIndex ?? 0;
+    if (widget.initialIndex != oldWidget.initialIndex
+      && widget.initialIndex != currentIndex
+    ) {
+      animateToPage(widget.initialIndex ?? 0);
     }
     super.didUpdateWidget(oldWidget);
   }
 
+  void animateToPage(int index) {
+    pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   void nextFact(int indexChange ) {
-    int length = widget.facts.length;
-    setState(() {
-      currentIndex = (currentIndex + indexChange).abs() % (length);
-      widget.onNewFact?.call(widget.facts[currentIndex], currentIndex);
-    });
+    currentIndex =  currentIndex + indexChange;
+    animateToPage(currentIndex);
   }
 
   @override
@@ -74,69 +82,77 @@ class _ReelScreenState extends State<ReelScreen> {
                 }
               },
             
-              child: Center(
-                child: Stack(
-                  children: [
-                    Image.network(
-                      widget.facts[currentIndex].photourl ?? '',
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
-                     Align(
-                      alignment: Alignment.bottomCenter,
-                       child: FractionallySizedBox(
-                        alignment: Alignment.bottomCenter,
-                        heightFactor: 0.5,
-                         child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black,
-                                  Colors.transparent,
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
+              child: PageView(
+                scrollDirection: Axis.vertical,
+                controller: pageController,
+                onPageChanged: (index) => 
+                  widget.onNewFact!(widget.facts[index], index),
+                children: widget.facts.map((fact) {
+                    return Center(
+                    child: Stack(
+                      children: [
+                        Image.network(
+                          fact.photourl ?? '',
+                          height: double.infinity,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: FractionallySizedBox(
+                            alignment: Alignment.bottomCenter,
+                            heightFactor: 0.7,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.black,
+                                      Colors.transparent,
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                ),
                               ),
+                          ),
+                        ),
+                        
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(40.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  fact.title,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(height: 10,),
+                                Text(
+                                  maxLines: 3,
+                                  fact.description,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 18,
+                                  )
+                                ),
+                                if (isOverflowing)
+                                ReadMoreButton(
+                                  onPress: () => showMoreInfo(
+                                    context, fact),
+                                )
+                              ],
                             ),
                           ),
-                       ),
-                     ),
-                    
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(40.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              widget.facts[currentIndex].title,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SizedBox(height: 10,),
-                            Text(
-                              maxLines: 3,
-                              widget.facts[currentIndex].description,
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 18,
-                              )
-                            ),
-                            if (isOverflowing)
-                            ReadMoreButton(
-                              onPress: () => showMoreInfo(
-                                context, widget.facts[currentIndex]),
-                            )
-                          ],
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  );}
+                ).toList(),
               ),
             )
         );

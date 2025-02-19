@@ -7,15 +7,13 @@ class Fact with EquatableMixin {
   final String? photourl;
 
   Fact({
-    required this.id,
     required this.description,
     this.photourl,
     required this.title
-  });
+  }) : id = title + description;
 
   factory Fact.fromJson(Map<String, dynamic> json) {
     return Fact(
-      id: json['id'],
       title: json['title'],
       description: json['description'],
       photourl: json['photourl']

@@ -5,7 +5,8 @@ import 'package:uuid/uuid.dart';
 
 class FactsApi {
   List<String> factsUrl = [
-    'https://www.thefactsite.com/top-100-technology-facts/'
+    'https://www.thefactsite.com/top-100-technology-facts/',
+    'https://www.thefactsite.com/100-random-food-facts/'
   ];
   final dio = Dio();
 
@@ -34,7 +35,6 @@ String removeAllHtmlTags(String htmlText) {
           description += paragraphs[i].innerHtml;
         }
         facts.add(Fact(
-          id: Uuid().v4(),
           title: removeAllHtmlTags(title),
           description: removeAllHtmlTags(description),
           photourl: image,
