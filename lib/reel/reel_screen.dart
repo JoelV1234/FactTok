@@ -43,120 +43,108 @@ class _ReelScreenState extends State<ReelScreen> {
   void animateToPage(int index) {
     pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
     );
   }
 
-  void nextFact(int indexChange ) {
-    currentIndex =  currentIndex + indexChange;
-    animateToPage(currentIndex);
-  }
-
   @override
   Widget build(BuildContext context) {
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final tp = TextPainter(
-          text: TextSpan(
-            text: widget.facts[currentIndex].description,
-            style: const TextStyle(fontSize: 18),
-          ),
-          textDirection: TextDirection.ltr,
-        );
-        tp.layout(maxWidth: constraints.maxWidth);
-        bool isOverflowing = tp.computeLineMetrics().length > 3;
-        return Scaffold(
-          body: GestureDetector(
-              supportedDevices: <PointerDeviceKind>{ 
-                PointerDeviceKind.touch ,
-                PointerDeviceKind.mouse
-              },
-              behavior: HitTestBehavior.opaque,
-              onVerticalDragEnd: (DragEndDetails details) {
-                if (details.velocity.pixelsPerSecond.dy > 0) {
-                  nextFact(-1);
-                } else {
-                  nextFact(1);
-                }
-              },
-            
-              child: PageView(
-                scrollDirection: Axis.vertical,
-                controller: pageController,
-                onPageChanged: (index) => 
-                  widget.onNewFact!(widget.facts[index], index),
-                children: widget.facts.map((fact) {
-                    return Center(
-                    child: Stack(
-                      children: [
-                        Image.network(
-                          fact.photourl ?? '',
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: FractionallySizedBox(
-                            alignment: Alignment.bottomCenter,
-                            heightFactor: 0.7,
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.black,
-                                      Colors.transparent,
-                                    ],
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                  ),
-                                ),
-                              ),
-                          ),
-                        ),
-                        
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.all(40.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  fact.title,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                SizedBox(height: 10,),
-                                Text(
-                                  maxLines: 3,
-                                  fact.description,
-                                  style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 18,
-                                  )
-                                ),
-                                if (isOverflowing)
-                                ReadMoreButton(
-                                  onPress: () => showMoreInfo(
-                                    context, fact),
-                                )
+    return Scaffold(
+      body: ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(
+        dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+        },
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final tp = TextPainter(
+            text: TextSpan(
+              text: widget.facts[currentIndex].description,
+              style: const TextStyle(fontSize: 18),
+            ),
+            textDirection: TextDirection.ltr,
+          );
+          tp.layout(maxWidth: constraints.maxWidth - 80);
+          bool isOverflowing = tp.computeLineMetrics().length > 3;
+          return PageView(
+            scrollDirection: Axis.vertical,
+            controller: pageController,
+            onPageChanged: (index) => setState(() { 
+              currentIndex = index;
+              widget.onNewFact!(widget.facts[index], index);
+            }),
+            children: widget.facts.map((fact) {
+              return Center(
+                child: Stack(
+                  children: [
+                    Image.network(
+                      fact.photourl ?? '',
+                      height: double.infinity,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FractionallySizedBox(
+                        alignment: Alignment.bottomCenter,
+                        heightFactor: 0.7,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.black,
+                                Colors.transparent,
                               ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  );}
-                ).toList(),
-              ),
-            )
-        );
-      }
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              fact.title,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(height: 10,),
+                            Text(
+                              maxLines: 3,
+                              fact.description,
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 18,
+                              )
+                            ),
+                            if (isOverflowing)
+                            ReadMoreButton(
+                              onPress: () => showMoreInfo(
+                                  context, fact),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                );}
+              ).toList(),
+            );
+        }
+      ),
+      )
     );
   }
 }
