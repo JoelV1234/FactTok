@@ -16,6 +16,9 @@ Ever thought TikTok needed more random facts and fewer dancing teenagers? **SAME
 - Over 100 interesting facts (like TikTok, but for people who read books)
 - Save facts for later (to impress your crush with random knowledge)
 
+## Demo 🎥
+Check out the demo [here](https://factstok-6fbdd.web.app/)
+
 ## 🛠️ Tech Stack: The Building Blocks
 
 ### Core frontend framework
