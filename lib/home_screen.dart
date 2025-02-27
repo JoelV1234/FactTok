@@ -19,9 +19,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLargeScreen = MediaQuery.of(context).size.width > 800;
     return Scaffold(
-      body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      body: Row(children: [
+        if (isLargeScreen)
+        NavigationRail(
+          groupAlignment: 0,
+          indicatorColor: const Color.fromARGB(71, 255, 255, 255),
+          unselectedLabelTextStyle: const TextStyle(color: Colors.white),
+          selectedLabelTextStyle: const TextStyle(color: Colors.white),
+          selectedIconTheme: const IconThemeData(color: Colors.white),
+          unselectedIconTheme: const IconThemeData(color: Colors.white),
+          selectedIndex: currentIndex,
+          labelType: NavigationRailLabelType.all,
+          onDestinationSelected: (index) {
+            setState(() => currentIndex = index);
+          },
+          backgroundColor: Colors.black,
+          destinations: [
+            NavigationRailDestination(
+              icon: const Icon(Icons.auto_stories),
+              label: Text('Stories'),
+            ),
+            NavigationRailDestination(
+              icon: const Icon(Icons.collections),
+              label: Text('Collections'),
+            ),
+          ]
+        ),
+        Expanded(child: screens[currentIndex])
+      ]),
+      bottomNavigationBar: isLargeScreen ? null : BottomNavigationBar(
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.white,
         backgroundColor: Colors.black,

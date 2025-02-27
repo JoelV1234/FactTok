@@ -18,9 +18,13 @@ Ever thought TikTok needed more random facts and fewer dancing teenagers? **SAME
 
 ## 🛠️ Tech Stack: The Building Blocks
 
-### Core Framework
-- **Flutter & Dart** - Because we like our apps like we like our facts: cross-platform and efficient
-- **Provider pattern** - State management so clean it would make Marie Kondo proud
+### Core frontend framework
+- **Flutter & Dart** - cross-platform and efficient
+- **Provider pattern** - clean state management 
+
+### Backend framework
+- **Node JS AND Express** - fast and efficient, and very easy to develop and deploy
+- **Render hosting** - Simeple and easy deploy service for node and Express 
 
 ### Data
 - **Dio** - HTTP client that fetches facts from **The Fact site**: https://www.thefactsite.com/
