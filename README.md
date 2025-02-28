@@ -1,7 +1,4 @@
 # FactTok
-
-## 🤔 What is this sorcery?
-
 Ever thought TikTok needed more random facts and fewer dancing teenagers? **SAME!** Welcome to FactTok, the app that makes you sound smart at parties you probably don't get invited to.
 
 - ✅ Procrastinate productively
@@ -12,14 +9,14 @@ Ever thought TikTok needed more random facts and fewer dancing teenagers? **SAME
 - ❌ Zero beauty filters
 - ❌ No "It's corn!" remixes
 
-### Features That'll Blow Your Mind 🤯
+### Features
 - Over 100 interesting facts (like TikTok, but for people who read books)
 - Save facts for later (to impress your crush with random knowledge)
 
-## Demo 🎥
+## Demo
 Check out the demo [here](https://factstok-6fbdd.web.app/)
 
-## 🛠️ Tech Stack: The Building Blocks
+## Tech Stack
 
 ### Core frontend framework
 - **Flutter & Dart** - cross-platform and efficient
@@ -37,7 +34,7 @@ Check out the demo [here](https://factstok-6fbdd.web.app/)
   - Cloud Firestore (where the facts live)
   - Analytics (to see how many minds we're blowing)
 
-## 🚀 Contributing to the project
+## Contributing to the project
 
 1. **Install Flutter** -> https://www.youtube.com/watch?v=mMeQhLGD-og
 2. **Clone the repo**
