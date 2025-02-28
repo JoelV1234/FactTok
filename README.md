@@ -23,7 +23,7 @@ Check out the demo [here](https://factstok-6fbdd.web.app/)
 - **Provider pattern** - clean state management 
 
 ### Backend framework
-- **Node JS AND Express** - fast and efficient, and very easy to develop and deploy
+- **Node JS and Express** - fast and efficient, and very easy to develop and deploy
 - **Render hosting** - Simeple and easy deploy service for node and Express 
 
 ### Data
